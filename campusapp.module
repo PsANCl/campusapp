@@ -1,0 +1,57 @@
+<?php
+/* Internal function used in campusapp */
+function campusapp_formatBizQueryParamMap($paramMap, $urlencode = false)
+{
+	$buff = "";
+	foreach ($paramMap as $k => $v)
+	{
+		if ($v === "" || $v === null) continue;
+		if($urlencode)
+		{
+		   $v = urlencode($v);
+		}
+		$buff .= $k . "=" . $v . "&";
+	}
+	$reqPar = '';
+	if (strlen($buff) > 0)
+	{
+		$reqPar = substr($buff, 0, strlen($buff)-1);
+	}
+	return $reqPar;
+}
+
+function campusapp_getSign($Parameters, $key='')
+{
+	ksort($Parameters);
+	$String = campusapp_formatBizQueryParamMap($Parameters, false);
+	$String = $String."&key=".$key;
+	$String = md5($String);
+	$result = strtoupper($String);
+	return $result;
+}
+
+/**
+ * Implements hook_qyweixin_from_username_alter().
+ */
+function campusapp_qyweixin_from_username_alter(&$username) {
+	$data=['userid'=>$username];
+	$data['signature'] = campusapp_getSign($data, \Drupal::config('campusapp.settings')->get('apikey'));
+	$url=sprintf('http://%s/api/user/toxgh', \Drupal::config('campusapp.settings')->get('host'));
+	$data = (string) \Drupal::httpClient()->post($url, ['form_params'=>$data])->getBody();
+	$result = json_decode($data);
+	if(!empty($result->data->xgh)) $username=$result->data->xgh;
+}
+
+/**
+ * Implements hook_qyweixin_to_username_alter().
+ */
+function campusapp_qyweixin_to_username_alter(&$username) {
+	$data=['xgh'=>$username];
+	$data['signature'] = campusapp_getSign($data, \Drupal::config('campusapp.settings')->get('apikey'));
+	$url=sprintf('http://%s/api/user/detail', \Drupal::config('campusapp.settings')->get('host'));
+	$data = (string) \Drupal::httpClient()->post($url, ['form_params'=>$data])->getBody();
+	$result = json_decode($data);
+	if(!empty($result->data->userid)) $username=$result->data->userid;
+}
+
+?>

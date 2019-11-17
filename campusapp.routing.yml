@@ -1,0 +1,7 @@
+campusapp.admin:
+  path: '/admin/config/services/campusapp'
+  defaults:
+    _form: '\Drupal\campusapp\Form\SettingsForm'
+    _title: 'Campusapp settings'
+  requirements:
+    _permission: 'administer site configuration'
