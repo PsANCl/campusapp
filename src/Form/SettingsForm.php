@@ -39,7 +39,7 @@ class SettingsForm extends ConfigFormBase {
 			'#title'=>$this->t('Campusapp Server host name'),
 			'#default_value' => empty($settings->get('host'))?'':$settings->get('host'),
 			'#field_prefix' => 'http://',
-			'#field_suffix' => '/api/user/detail',
+			'#field_suffix' => '/api/user',
 			'#required' => TRUE,
 		);
 		$form['apikey']=array(
