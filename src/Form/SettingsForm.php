@@ -48,6 +48,12 @@ class SettingsForm extends ConfigFormBase {
 			'#default_value' => empty($settings->get('apikey'))?'':$settings->get('apikey'),
 			'#required' => TRUE,
 		);
+		$form['apisource']=array(
+			'#type' => 'textfield',
+			'#title' => $this->t('API Source'),
+			'#default_value' => empty($settings->get('apisource'))?'':$settings->get('apisource'),
+			'#required' => TRUE,
+		);
 		return parent::buildForm($form, $form_state);
 	}
 
@@ -68,6 +74,7 @@ class SettingsForm extends ConfigFormBase {
 		$this->config('campusapp.settings')
 			->set('host', $form_state->getValue('host'))
 			->set('apikey', $form_state->getValue('apikey'))
+			->set('apisource', $form_state->getValue('apisource'))
 			->save();
 		
 		parent::submitForm($form, $form_state);

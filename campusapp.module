@@ -34,12 +34,22 @@ function campusapp_getSign($Parameters, $key='')
  * Implements hook_qyweixin_from_username_alter().
  */
 function campusapp_qyweixin_from_username_alter(&$username) {
-	$data=['userid'=>$username];
+	$data=['userid'=>$username, 'source'=>\Drupal::config('campusapp.settings')->get('apisource')];
 	$data['signature'] = campusapp_getSign($data, \Drupal::config('campusapp.settings')->get('apikey'));
 	$url=sprintf('http://%s/api/user/toxgh', \Drupal::config('campusapp.settings')->get('host'));
 	$data = (string) \Drupal::httpClient()->post($url, ['form_params'=>$data])->getBody();
 	$result = json_decode($data);
-	if($result->e=='9999') $username=$result->data->xgh;
+	if($result->e=='9999') {
+		if(is_array($result->data)) {
+			$u=[];
+			foreach($result->data as $r) {
+				$u[]=$r->xgh;
+			}
+			$username=$u;
+		}
+		else 
+			$username=$result->data->xgh;
+	}
 	else \Drupal::logger('campusapp')->error('Error when accessing campusapp interface user/toxgh: %errcode: %errmsg', ['%errcode'=>$result->e, '%errmsg'=>$result->m]);
 }
 
@@ -47,7 +57,7 @@ function campusapp_qyweixin_from_username_alter(&$username) {
  * Implements hook_qyweixin_to_username_alter().
  */
 function campusapp_qyweixin_to_username_alter(&$username) {
-	$data=['xgh'=>$username];
+	$data=['xgh'=>$username, 'source'=>\Drupal::config('campusapp.settings')->get('apisource')];
 	$data['signature'] = campusapp_getSign($data, \Drupal::config('campusapp.settings')->get('apikey'));
 	$url=sprintf('http://%s/api/user/detail', \Drupal::config('campusapp.settings')->get('host'));
 	$data = (string) \Drupal::httpClient()->post($url, ['form_params'=>$data])->getBody();
