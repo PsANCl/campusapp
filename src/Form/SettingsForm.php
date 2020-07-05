@@ -32,7 +32,7 @@ class SettingsForm extends ConfigFormBase {
 	* {@inheritdoc}
 	*/
 	public function buildForm(array $form, FormStateInterface $form_state) {
-		$settings=$this->config('campusapp.settings');
+	$settings=$this->config('campusapp.settings');
 		$form=[];
 		$form['host']=array(
 			'#type'=>'textfield',

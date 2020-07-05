@@ -39,6 +39,10 @@ function campusapp_qyweixin_from_username_alter(&$username) {
 	$url=sprintf('http://%s/api/user/toxgh', \Drupal::config('campusapp.settings')->get('host'));
 	$data = (string) \Drupal::httpClient()->post($url, ['form_params'=>$data])->getBody();
 	$result = json_decode($data);
+	if(!property_exists($result,'e')) {
+		\Drupal::logger('campusapp')->error('Error when accessing campusapp interface user/toxgh');
+		return;
+	}
 	if($result->e=='9999') {
 		if(is_array($result->data)) {
 			$u=[];
@@ -50,7 +54,7 @@ function campusapp_qyweixin_from_username_alter(&$username) {
 		else 
 			$username=$result->data->xgh;
 	}
-	else \Drupal::logger('campusapp')->error('Error when accessing campusapp interface user/toxgh: %errcode: %errmsg', ['%errcode'=>$result->e, '%errmsg'=>$result->m]);
+	else \Drupal::logger('campusapp')->error('Error when accessing campusapp interface user/toxgh: %errcode: %errmsg. Parameter: %param', ['%errcode'=>$result->e, '%errmsg'=>$result->m, '%param' =>$username]);
 }
 
 /**
@@ -62,8 +66,12 @@ function campusapp_qyweixin_to_username_alter(&$username) {
 	$url=sprintf('http://%s/api/user/detail', \Drupal::config('campusapp.settings')->get('host'));
 	$data = (string) \Drupal::httpClient()->post($url, ['form_params'=>$data])->getBody();
 	$result = json_decode($data);
+	if(!property_exists($result,'e')) {
+		\Drupal::logger('campusapp')->error('Error when accessing campusapp interface user/toxgh');
+		return;
+	}
 	if($result->e=='9999') $username=$result->data->userid;
-	else \Drupal::logger('campusapp')->error('Error when accessing campusapp interface user/detail: %errcode: %errmsg', ['%errcode'=>$result->e, '%errmsg'=>$result->m]);
+	else \Drupal::logger('campusapp')->error('Error when accessing campusapp interface user/detail: %errcode: %errmsg. Parameter: %param', ['%errcode'=>$result->e, '%errmsg'=>$result->m, '%param'=>$username]);
 }
 
 ?>
