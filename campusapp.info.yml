@@ -1,4 +1,4 @@
-name: 'Campusapp qyweixin interface'
+name: 'Campusapp interface'
 type: module
 description: 'Allow interchange user information with campusapp'
 package: Data Exchange

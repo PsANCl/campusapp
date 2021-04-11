@@ -5,3 +5,10 @@ campusapp.admin:
     _title: 'Campusapp settings'
   requirements:
     _permission: 'administer site configuration'
+campusapp.qrcodelogin:
+  path: '/user/login/campusapp'
+  defaults:
+    _controller: '\Drupal\campusapp\Controller\QrCodeLoginController::LoginPage'
+    _title: 'QrCode Login'
+  requirements:
+    _user_is_logged_in: 'FALSE'

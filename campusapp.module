@@ -74,4 +74,16 @@ function campusapp_qyweixin_to_username_alter(&$username) {
 	else \Drupal::logger('campusapp')->error('Error when accessing campusapp interface user/detail: %errcode: %errmsg. Parameter: %param', ['%errcode'=>$result->e, '%errmsg'=>$result->m, '%param'=>$username]);
 }
 
+/**
+ * Implements hook_library_info_alter().
+ */
+function campusapp_library_info_alter(&$libraries, $extension) {
+	$host=\Drupal::config('campusapp.settings')->get('host');
+	if(empty($host)) return;
+	unset($libraries['campusapp-qrlogin']['js']);
+	$libraries['campusapp-qrlogin']['js']=[
+		'//'.$host.'/js/mxqrcode.js' => ['type' => 'external', 'minified' => 'true'],
+		'//'.$host.'/js/mxsocket.js' => ['type' => 'external', 'minified' => 'true']
+	];
+}
 ?>
