@@ -4,5 +4,7 @@ campusapp-qrlogin:
   js:
     //www.campusapp.com.cn/js/mxqrcode.js: {type: external, minified: true}
     //www.campusapp.com.cn/js/mxsocket.js: {type: external, minified: true}
+    js/init.js: {}
   dependencies:
     - core/jquery
+    - core/drupalSettings
