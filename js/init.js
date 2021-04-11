@@ -1,7 +1,7 @@
 $(function() {
 	new mxqrcode({
 		debug: true,
-		host: drupalSettings.campusapp.campusapp-qrlogin.host,
+		host: drupalSettings.campusapp.qrLogin.host,
 		channel: "normal",
 		success: function(msg)
 		{
@@ -12,11 +12,11 @@ $(function() {
 			console.log(msg);
 		},
 		ext: {
-			"apiUrl": drupalSettings.campusapp.campusapp-qrlogin.posturl,
-			"apiKey": drupalSettings.campusapp.campusapp-qrlogin.apisource,
+			"apiUrl": drupalSettings.campusapp.qrLogin.posturl,
+			"apiKey": drupalSettings.campusapp.qrLogin.apisource,
 		},
 		div: "#qrcode",
-		title: drupalSettings.campusapp.campusapp-qrlogin.pagetitle,
+		title: drupalSettings.campusapp.qrLogin.pagetitle,
 		scanfinish: function(msg)
 		{
 			console.log(msg);

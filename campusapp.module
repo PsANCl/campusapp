@@ -86,4 +86,17 @@ function campusapp_library_info_alter(&$libraries, $extension) {
 		'//'.$host.'/js/mxsocket.js' => ['type' => 'external', 'minified' => 'true']
 	];
 }
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function campusapp_page_attachments_alter(&$page) {
+	$host=\Drupal::config('campusapp.settings')->get('host');
+	if(empty($host)) return;
+	$page['#attached']['drupalSettings']['campusapp']['qrLogin']['host']=$host;
+	$page['#attached']['drupalSettings']['campusapp']['qrLogin']['posturl']=\Drupal\Core\Url::fromRoute('campusapp.qrcodelogin', [], ['absolute'=>TRUE])->toString();
+	$page['#attached']['drupalSettings']['campusapp']['qrLogin']['apisource']=\Drupal::config('campusapp.settings')->get('apisource');
+	$page['#attached']['drupalSettings']['campusapp']['qrLogin']['pagetitle']=t('Login');
+}
+
 ?>
