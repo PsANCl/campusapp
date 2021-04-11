@@ -7,8 +7,24 @@ campusapp.admin:
     _permission: 'administer site configuration'
 campusapp.qrcodelogin:
   path: '/user/login/campusapp'
+  methods: GET
   defaults:
     _controller: '\Drupal\campusapp\Controller\QrCodeLoginController::LoginPage'
     _title: 'QrCode Login'
   requirements:
     _user_is_logged_in: 'FALSE'
+campusapp.qrcodelogin.result:
+  path: '/user/login/campusapp'
+  methods: GET
+  defaults:
+    _controller: '\Drupal\campusapp\Controller\QrCodeLoginController::LoginResult'
+  requirements:
+    _format: json
+    _content_type_format: json
+  options:
+    no_cache: TRUE
+campusapp.qrcodelogin.callback:
+  path: '/user/login/campusapp'
+  methods: POST
+  defaults:
+    _controller: '\Drupal\campusapp\Controller\QrCodeLoginController::LoginPageCallback'
