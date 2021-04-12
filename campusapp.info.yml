@@ -5,3 +5,5 @@ package: Data Exchange
 core: '8.x'
 configure: campusapp.admin
 version: '8.x-0.1'
+dependencies:
+  - qyweixin
