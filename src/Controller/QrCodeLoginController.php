@@ -2,6 +2,8 @@
 namespace Drupal\campusapp\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\user\UserData;
+use Drupal\qyweixin\CorpBase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -15,6 +17,7 @@ class QrCodeLoginController extends ControllerBase {
 		$build['#cache']=[
 			'max-age' => 0,
 		];
+		$build['#theme']='user-login-campusapp';
 		$build['placeholder']=['#markup'=>'<div id="qrcode"/>'];
 		
 		return $build;
@@ -24,6 +27,12 @@ class QrCodeLoginController extends ControllerBase {
 		$post_array=$request->request;
 		unset($post_array['signature']);
 		if($request->request['signature']==campusapp_getSign($post_array, \Drupal::config('campusapp.settings')->get('apikey'))) {
+			$userid=$request->request['xgh'];
+			\Drupal::moduleHandler()->alter('qyweixin_to_username', $userid);
+			$user=user_load_by_name($userid);
+			if($user==FALSE) {
+				$openid=CorpBase::userConvertToOpenid($userid);
+			}
 			$result=[
 				'e'=>9999,
 				'm'=>''

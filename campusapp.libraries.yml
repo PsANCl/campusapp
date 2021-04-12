@@ -1,6 +1,9 @@
 campusapp-qrlogin:
   version: 1.x
   header: true
+  css:
+    theme:
+      css/qrcode.css: {}
   js:
     //www.campusapp.com.cn/js/mxqrcode.js: {type: external, minified: true}
     //www.campusapp.com.cn/js/mxsocket.js: {type: external, minified: true}
