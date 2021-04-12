@@ -14,6 +14,7 @@ $(function() {
 		ext: {
 			"apiUrl": drupalSettings.campusapp.qrLogin.posturl,
 			"apiKey": drupalSettings.campusapp.qrLogin.apisource,
+			"session": drupalSettings.campusapp.qrLogin.sessionid,
 		},
 		div: "#qrcode",
 		title: drupalSettings.campusapp.qrLogin.pagetitle,
