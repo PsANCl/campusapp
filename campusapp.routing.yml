@@ -28,3 +28,5 @@ campusapp.qrcodelogin.callback:
   methods: POST
   defaults:
     _controller: '\Drupal\campusapp\Controller\QrCodeLoginController::LoginPageCallback'
+  requirements:
+    _user_is_logged_in: 'FALSE'

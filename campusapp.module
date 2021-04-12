@@ -96,8 +96,8 @@ function campusapp_page_attachments_alter(&$page) {
 	if(empty($host)) return;
 	$page['#attached']['drupalSettings']['campusapp']['qrLogin']=[
 		'host'=>($_SERVER['HTTPS']?'https://':'http://').$host,
-		//'posturl'=>\Drupal\Core\Url::fromRoute('campusapp.qrcodelogin', [], ['absolute'=>TRUE])->toString(),
-		'posturl'=>'http://api.library.ccom.edu.cn/return.php',
+		'posturl'=>\Drupal\Core\Url::fromRoute('campusapp.qrcodelogin', [], ['absolute'=>TRUE])->toString(),
+		//'posturl'=>'http://api.library.ccom.edu.cn/return.php',
 		'apisource'=>\Drupal::config('campusapp.settings')->get('apisource'),
 		'pagetitle'=>t('Login @site_name', ['@site_name'=>\Drupal::config('system.site')->get('name')]),
 		'sessionid'=>\Drupal::service('session')->getId()
