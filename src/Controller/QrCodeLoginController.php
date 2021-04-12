@@ -29,7 +29,7 @@ class QrCodeLoginController extends ControllerBase {
                 \Drupal::logger('campusapp')->debug('Session: @session. Userid: @userid.',
 			['@session'=>$post_array['ext']['session'], '@userid'=>$post_array['xgh']]
 		);
-		if($request->request->get('signature')==campusapp_getSign($post_array['ext'], \Drupal::config('campusapp.settings')->get('apikey'))) {
+		if($post_array['signature']==campusapp_getSign($post_array['ext'], \Drupal::config('campusapp.settings')->get('apikey'))) {
 			$userid=$post_array['xgh'];
 			\Drupal::moduleHandler()->alter('qyweixin_to_username', $userid);
 			\Drupal::state()->set('campusapp.session.'.$post_array['ext']['session'], $userid);
