@@ -94,11 +94,14 @@ function campusapp_library_info_alter(&$libraries, $extension) {
 function campusapp_page_attachments_alter(&$page) {
 	$host=\Drupal::config('campusapp.settings')->get('host');
 	if(empty($host)) return;
-	$page['#attached']['drupalSettings']['campusapp']['qrLogin']['host']=($_SERVER['HTTPS']?'https://':'http://').$host;
-	$page['#attached']['drupalSettings']['campusapp']['qrLogin']['posturl']=\Drupal\Core\Url::fromRoute('campusapp.qrcodelogin', [], ['absolute'=>TRUE])->toString();
-	$page['#attached']['drupalSettings']['campusapp']['qrLogin']['apisource']=\Drupal::config('campusapp.settings')->get('apisource');
-	$page['#attached']['drupalSettings']['campusapp']['qrLogin']['pagetitle']=t('Login');
-	$page['#attached']['drupalSettings']['campusapp']['qrLogin']['sessionid']=\Drupal::service('session')->getId();
+	$page['#attached']['drupalSettings']['campusapp']['qrLogin']=[
+		'host'=>($_SERVER['HTTPS']?'https://':'http://').$host,
+		//'posturl'=>\Drupal\Core\Url::fromRoute('campusapp.qrcodelogin', [], ['absolute'=>TRUE])->toString(),
+		'posturl'=>'http://api.library.ccom.edu.cn/return.php',
+		'apisource'=>\Drupal::config('campusapp.settings')->get('apisource'),
+		'pagetitle'=>t('Login @site_name', ['@site_name'=>\Drupal::config('system.site')->get('name')]),
+		'sessionid'=>\Drupal::service('session')->getId()
+	];
 }
 
 ?>
