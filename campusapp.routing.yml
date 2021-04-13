@@ -21,6 +21,7 @@ campusapp.qrcodelogin.result:
   requirements:
     _format: json
     _content_type_format: json
+    _user_is_logged_in: 'FALSE'
   options:
     no_cache: TRUE
 campusapp.qrcodelogin.callback:
