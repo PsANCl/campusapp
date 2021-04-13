@@ -5,7 +5,13 @@ $(function() {
 		channel: "normal",
 		success: function(msg)
 		{
-			console.log(msg);
+			$.ajax({
+				url: drupalSettings.campusapp.qrLogin.posturl+'?_format=json&sessionid='+drupalSettings.campusapp.qrLogin.sessionid,
+				dataType: 'json',
+				success: function(data){
+					if(data.status=1) alert(data.uid);
+				}
+			});
 		},
 		error: function(msg)
 		{
