@@ -33,7 +33,7 @@ class QrCodeLoginController extends ControllerBase {
 			$userid=$post_array['xgh'];
 			\Drupal::moduleHandler()->alter('qyweixin_to_username', $userid);
 			\Drupal::state()->set('campusapp.session.'.$post_array['ext']['session'], $userid);
-			$user=user_load_by_name($userid);
+			$user=\user_load_by_name($userid);
 			if($user==FALSE) {
 				$openid=CorpBase::userConvertToOpenid($userid);
 			}
@@ -49,6 +49,18 @@ class QrCodeLoginController extends ControllerBase {
 	}
 	
 	public function LoginResult(Request $request) {
+		$sessionid=$request->query->get('sessionid');
+		$result=[];
+		$result['sessionid']=$sessionid;
+		$uid=\Drupal::state()->get('campusapp.session.'.$sessionid);
+		if(empty($uid)) $result['status']=0;
+		else {
+			$result['uid']=$uid;
+			\Drupal::state()->delete('campusapp.session.'.$sessionid);
+			$user=\user_load_by_name($uid);
+			if($user) \user_login_finalize($user);
+			$result['status']=1;
+		}
 		$response=new JsonResponse($result);
 		return $response;
 	}
